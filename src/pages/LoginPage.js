@@ -1,5 +1,7 @@
 import axios from "axios";
 import React, {useState, useEffect} from "react";
+import {useNavigate} from 'react-router-dom';
+
 
 
 
@@ -7,18 +9,19 @@ function LoginPage() {
 
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
+    const navigate = useNavigate();
 
 
     const handleSubmitClick = async() => {
         const response = await axios.post('http://localhost:5000/api/user/login/', {
             email, password
         });
-        const {success, message} = response.data;
-        console.log(response);
+        const {success, message, user} = response.data;
+        console.log(user);
         if(success) {
             setEmail(null);
             setPassword(null)
-            alert(message);
+            navigate(`/?id=${user._id}`);
         } else {
             setEmail(null);
             setPassword(null);
